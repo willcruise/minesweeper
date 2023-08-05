@@ -38,7 +38,7 @@ NUMBER5 = pygame.transform.scale(pygame.image.load("five5.png"), (ROOM_WIDTH, RO
 NUMBER6 = pygame.transform.scale(pygame.image.load("six6.png"), (ROOM_WIDTH, ROOM_HEIGHT))
 GAMEOVER = pygame.transform.scale(pygame.image.load("gameover.png"), (BOARD.get_width()/2, BOARD.get_height()/2))
 PLAYAGAIN = pygame.transform.scale(pygame.image.load("playagain.png"), (GAMEOVER.get_width()/2, GAMEOVER.get_height()/10))
-GAMECLEAR = pygame.transform.scale(pygame.image.load("gameclear.png"), (BOARD.get_width()/2, BOARD.get_height()/2))
+GAMECLEAR = pygame.transform.scale(pygame.image.load("gameclear.png"), (BOARD.get_width()/2, BOARD.get_height()/4))
 
 
 class values:
@@ -213,8 +213,9 @@ def draw(elapsed_time):
         time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
         WIN.blit(time_text, (BLANK_WIDTH, 10))
 
-
-    mine_count = FONT.render(f"Mine Left: {values.mineleft}", 1, "red")
+    f_key = FONT.render("(F)", 1, "white")
+    WIN.blit(f_key, (SCREEN_WIDTH/2 + FLAG.get_width()/2 + 5, 10))
+    mine_count = FONT.render(f"Mine Left: {values.mineleft}", 1, "white")
     WIN.blit(mine_count, (SCREEN_WIDTH - BLANK_WIDTH - mine_count.get_width(), 10))
 
     pygame.display.update()
