@@ -20,10 +20,10 @@ FONT = pygame.font.SysFont("comicsans", 20)
 ROOM_WIDTH = BOARD.get_width()/BOARD_ROW
 ROOM_HEIGHT = BOARD.get_height()/BOARD_COL
 
-BLANK_WIDTH = SCREEN_WIDTH/2 - BOARD.get_width()/2
-BLANK_HEIGHT = SCREEN_HEIGHT/2 - BOARD.get_height()/2
 
-MINECOUNT = 70
+
+
+MINECOUNT = 75
 
 BOMB = pygame.transform.scale(pygame.image.load("bomb.jpg"),(ROOM_WIDTH, ROOM_HEIGHT))
 VOID = pygame.transform.scale(pygame.image.load("blank.jpg"), (ROOM_WIDTH, ROOM_HEIGHT))
@@ -37,9 +37,9 @@ NUMBER4 = pygame.transform.scale(pygame.image.load("four4.png"), (ROOM_WIDTH, RO
 NUMBER5 = pygame.transform.scale(pygame.image.load("five5.png"), (ROOM_WIDTH, ROOM_HEIGHT))
 NUMBER6 = pygame.transform.scale(pygame.image.load("six6.png"), (ROOM_WIDTH, ROOM_HEIGHT))
 GAMEOVER = pygame.transform.scale(pygame.image.load("gameover.png"), (BOARD.get_width()/2, BOARD.get_height()/2))
-PLAYAGAIN = pygame.transform.scale(pygame.image.load("playagain.png"), (GAMEOVER.get_width()/2, GAMEOVER.get_height()/10))
 GAMECLEAR = pygame.transform.scale(pygame.image.load("gameclear.png"), (BOARD.get_width()/2, BOARD.get_height()/4))
-
+PLAYAGAIN = pygame.transform.scale(pygame.image.load("playagain.png"), (GAMEOVER.get_width()/2, GAMEOVER.get_height()/10))
+SMALL_FLAG = pygame.transform.scale(pygame.image.load("sign.jpg"), (ROOM_WIDTH/4, ROOM_HEIGHT/4))
 
 class values:
     boardclicked = False
@@ -80,7 +80,7 @@ def restart():
 
 
 def roomCord(pos):
-    roomcord = (((pos[0]-BLANK_WIDTH)//ROOM_WIDTH)+1, ((pos[1]-BLANK_HEIGHT)//ROOM_HEIGHT)+1)
+    roomcord = (((pos[0]-SCREEN_WIDTH/2 + BOARD.get_width()/2)//ROOM_WIDTH)+1, ((pos[1]-SCREEN_HEIGHT/2 + BOARD.get_height()/2)//ROOM_HEIGHT)+1)
     return roomcord
 
 
@@ -174,49 +174,52 @@ def draw(elapsed_time):
     WIN.blit(BG, (0, 0))
     WIN.blit(BOARD, (SCREEN_WIDTH/2-BOARD.get_width()/2, SCREEN_HEIGHT/2-BOARD.get_height()/2))
 
+    for r in values.rooms:
+        if values.rooms[r] == constants.crate:
+            WIN.blit(CRATE, ( SCREEN_WIDTH/2 - BOARD.get_width()/2+ ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.flag:
+            WIN.blit(FLAG, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.void:
+            WIN.blit(VOID, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.number1:
+            WIN.blit(NUMBER1, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.number2:
+            WIN.blit(NUMBER2, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.number3:
+            WIN.blit(NUMBER3, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.number4:
+            WIN.blit(NUMBER4, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.number5:
+            WIN.blit(NUMBER5, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.number6:
+            WIN.blit(NUMBER6, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+        elif values.rooms[r] == constants.mine:
+            WIN.blit(BOMB, (SCREEN_WIDTH/2 - BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2 - BOARD.get_height()/2+ROOM_HEIGHT*(r[1]-1)))
+
     if values.redflag:
         WIN.blit(FLAG, (SCREEN_WIDTH/2-ROOM_WIDTH/2, 10))
     else:
         WIN.blit(GREEN_FLAG, (SCREEN_WIDTH/2-ROOM_WIDTH/2, 10))
-
-    for r in values.rooms:
-        if values.rooms[r] == constants.crate:
-            WIN.blit(CRATE, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.flag:
-            WIN.blit(FLAG, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.void:
-            WIN.blit(VOID, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.number1:
-            WIN.blit(NUMBER1, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.number2:
-            WIN.blit(NUMBER2, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.number3:
-            WIN.blit(NUMBER3, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.number4:
-            WIN.blit(NUMBER4, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.number5:
-            WIN.blit(NUMBER5, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.number6:
-            WIN.blit(NUMBER6, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
-        elif values.rooms[r] == constants.mine:
-            WIN.blit(BOMB, (SCREEN_WIDTH/2-BOARD.get_width()/2+ROOM_WIDTH*(r[0]-1), SCREEN_HEIGHT/2-BOARD.get_width()/2+ROOM_HEIGHT*(r[1]-1)))
+        for r in values.rooms:
+            if values.rooms[r] == constants.crate:
+                WIN.blit(SMALL_FLAG, (SCREEN_WIDTH/2-BOARD.get_width()/2-SMALL_FLAG.get_width()/2+(BOARD.get_width()/(BOARD_ROW*2))*(2*r[0]-1), SCREEN_HEIGHT/2-BOARD.get_height()/2-SMALL_FLAG.get_width()/2+(BOARD.get_height()/(BOARD_COL*2))*(2*r[1]-1)))
 
     if values.gameover:
         WIN.blit(GAMEOVER, (SCREEN_WIDTH/2-GAMEOVER.get_width()/2, SCREEN_HEIGHT/2-GAMEOVER.get_height()/2))
         WIN.blit(PLAYAGAIN, (SCREEN_WIDTH/2-PLAYAGAIN.get_width()/2, SCREEN_HEIGHT/2 + GAMEOVER.get_height()/2 + 10))
         time_text = FONT.render(f"Time: {round(values.gameovertime)}s", 1, "white")
-        WIN.blit(time_text, (BLANK_WIDTH, 10))
+        WIN.blit(time_text, (SCREEN_WIDTH/2 - BOARD.get_width()/2, 10))
     elif values.win:
         WIN.blit(GAMECLEAR, (SCREEN_WIDTH/2-GAMEOVER.get_width()/2, SCREEN_HEIGHT/2-GAMECLEAR.get_height()/2))
         WIN.blit(PLAYAGAIN, (SCREEN_WIDTH/2-PLAYAGAIN.get_width()/2, SCREEN_HEIGHT/2 + GAMECLEAR.get_height()/2 + 10))
     else:
         time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
-        WIN.blit(time_text, (BLANK_WIDTH, 10))
+        WIN.blit(time_text, (SCREEN_WIDTH/2 - BOARD.get_width()/2, 10))
 
     f_key = FONT.render("(F)", 1, "white")
     WIN.blit(f_key, (SCREEN_WIDTH/2 + FLAG.get_width()/2 + 5, 10))
     mine_count = FONT.render(f"Mine Left: {values.mineleft}", 1, "white")
-    WIN.blit(mine_count, (SCREEN_WIDTH - BLANK_WIDTH - mine_count.get_width(), 10))
+    WIN.blit(mine_count, (SCREEN_WIDTH - SCREEN_WIDTH/2 + BOARD.get_width()/2 - mine_count.get_width(), 10))
 
     pygame.display.update()
 
@@ -252,7 +255,7 @@ def main():
                 pos = pygame.mouse.get_pos()
                 rc = roomCord(pos)
                 if not values.gameover and not values.win:
-                    if BLANK_WIDTH < pos[0] < SCREEN_WIDTH-BLANK_WIDTH and BLANK_HEIGHT < pos[1] < SCREEN_HEIGHT-BLANK_HEIGHT:
+                    if SCREEN_WIDTH/2 - BOARD.get_width()/2 < pos[0] < SCREEN_WIDTH-SCREEN_WIDTH/2 + BOARD.get_width()/2 and SCREEN_HEIGHT/2 - BOARD.get_height()/2 < pos[1] < SCREEN_HEIGHT-SCREEN_HEIGHT/2 + BOARD.get_height()/2:
                         if values.redflag:
                             if values.rooms[rc] == constants.crate:
                                 if not values.boardclicked:
@@ -276,10 +279,10 @@ def main():
 
                         if not values.redflag:
                             if values.rooms[rc] == constants.crate:
-                                if values.mineleft == 0:
-                                    values.win = True
                                 values.rooms[rc] = constants.flag
                                 values.mineleft -= 1
+                                if values.mineleft == 0:
+                                    values.win = True
                             elif values.rooms[rc] == constants.flag:
                                 values.rooms[rc] = constants.crate
                                 values.mineleft += 1
@@ -291,11 +294,14 @@ def main():
                     if SCREEN_WIDTH/2-GREEN_FLAG.get_width()/2 < pos[0] < SCREEN_WIDTH/2+GREEN_FLAG.get_width()/2 and 10 < pos[1] < 10+GREEN_FLAG.get_height():
                         values.redflag = not values.redflag
 
-                elif values.gameover or values.win:
-                    if SCREEN_WIDTH/2-PLAYAGAIN.get_width()/2 < pos[0] < SCREEN_WIDTH/2-PLAYAGAIN.get_width()/2+PLAYAGAIN.get_width() and SCREEN_HEIGHT/2 + GAMEOVER.get_height()/2 < pos[1] < SCREEN_HEIGHT/2 + GAMEOVER.get_height()/2 + PLAYAGAIN.get_height():
+                elif values.gameover:
+                    if SCREEN_WIDTH/2-PLAYAGAIN.get_width()/2 < pos[0] < SCREEN_WIDTH/2+PLAYAGAIN.get_width()/2 and SCREEN_HEIGHT/2 + GAMEOVER.get_height()/2 < pos[1] < SCREEN_HEIGHT/2 + GAMEOVER.get_height()/2 + PLAYAGAIN.get_height():
                         restart()
                         main()
-
+                elif values.win:
+                    if SCREEN_WIDTH/2-PLAYAGAIN.get_width()/2 < pos[0] < SCREEN_WIDTH/2-PLAYAGAIN.get_width()/2+PLAYAGAIN.get_width() and SCREEN_HEIGHT/2 + GAMECLEAR.get_height()/2 + 10 < pos[1] < SCREEN_HEIGHT/2 + GAMECLEAR.get_height()/2 + 10 + PLAYAGAIN.get_height():
+                        restart()
+                        main()
                 if values.mineleft == 0:
                     allmatch = True
                     for rc in values.minerooms:
